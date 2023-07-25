@@ -1,6 +1,6 @@
 import express from 'express'
-
 import router from './routes'
+import './shared/services/TranslationsYup.ts'
 
 const server = express()
 

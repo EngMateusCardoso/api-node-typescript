@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router} from 'express'
 import { StatusCodes } from 'http-status-codes'
+
+import { cidadesController } from '../../controllers'
 
 const router = Router()
 
 router.get('/', (_, res) => {
-  res.send('Hello, world!')
+  res.send('working!')
 })
+
+router.post('/cidades', cidadesController.createBodyValidation, cidadesController.create)
 
 router.get('/api', (_, res) => {
   res.json({ api: 'up' })
