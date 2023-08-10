@@ -9,11 +9,8 @@ router.get('/', (_, res) => {
   res.send('working!')
 })
 
-router.post(
-  '/cidades',
-  cidadesController.createValidation,
-  cidadesController.create
-)
+router.get('/cidades', cidadesController.getAllValidation, cidadesController.getAll)
+router.post('/cidades', cidadesController.createValidation, cidadesController.create)
 
 
 
