@@ -1,31 +1,34 @@
 import { Request, RequestHandler, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
+import { validation } from '../../shared/middleware/Validations'
 
+// Tipagem do body da requisição
 interface ICidade {
   nome: string
+  estado: string
 }
 
-const bodyValidation: yup.Schema<ICidade> = yup.object().shape({
-  nome: yup.string().required().min(3),
+// Tipagem do query da requisição
+interface IFilter {
+  filter?: string
+}
+
+// Método de validação da controller Cidades
+// Os parâmetros são os schemas de validação com a sintaxe do yup
+// validation é uma função que retorna uma função que retorna um RequestHandler,
+// portanto, createValidation é uma função que retorna um RequestHandler
+export const createValidation  = validation({
+  body: yup.object().shape({
+    nome: yup.string().required().min(3),
+    estado: yup.string().required().min(2),
+  }),
+  query: yup.object().shape({
+    filter: yup.string().required().min(3),
+  }),
 })
 
-export const createBodyValidation: RequestHandler = async (req, res, next) => {
-  try {
-    await bodyValidation.validate(req.body, { abortEarly: false })
-    next()
-  } catch (err) {
-    const yupErrorr = err as yup.ValidationError
-    const errors: Record<string, string> = {}
-    yupErrorr.inner.forEach((error, index) => {
-      if (!error.path) return;
-      errors[error.path] = error.message
-    })
-    return res.status(StatusCodes.BAD_REQUEST).json({ errors })
-  }
-}
-
-
+// Método create da controller Cidades
 export const create = async (req: Request<{}, {}, ICidade>, res: Response) => {
   console.log(req.body)
   return res.send('Create!')

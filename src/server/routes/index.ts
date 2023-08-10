@@ -1,25 +1,34 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Router} from 'express'
-import { StatusCodes } from 'http-status-codes'
-
 import { cidadesController } from '../../controllers'
 
+// O router é um middleware que permite eu criar rotas para o meu servidor
+// Depois de criar as rotas, eu preciso dizer ao meu servidor que ele vai usar essas rotas
 const router = Router()
 
 router.get('/', (_, res) => {
   res.send('working!')
 })
 
-router.post('/cidades', cidadesController.createBodyValidation, cidadesController.create)
+router.post(
+  '/cidades',
+  cidadesController.createValidation,
+  cidadesController.create
+)
 
+
+
+// res.send() envia uma string
+// res.json() envia um objeto json
 router.get('/api', (_, res) => {
   res.json({ api: 'up' })
 })
 
+// req.params é um objeto que contém os parâmetros da url
 router.get('/api/echo/:what', (req, res) => {
   res.json({ echo: req.params.what })
 })
 
+// podemos pegar mais de um parâmetro da url
 router.get('/api/echo/:what/:howmany', (req, res) => {
   const { what, howmany } = req.params
   const count = parseInt(howmany, 10) || 1
@@ -27,14 +36,9 @@ router.get('/api/echo/:what/:howmany', (req, res) => {
   res.json({ echo: repeats })
 })
 
-router.get('/api/sum/:num1/:num2', (req, res) => {
-  const { num1, num2 } = req.params
-  const sum = parseInt(num1, 10) + parseInt(num2, 10)
-  res.json({ sum })
-})
-
+// req.body é um objeto que contém os dados enviados no corpo da requisição
 router.post('/api/post', (req, res) => {
-  return res.status(StatusCodes.ACCEPTED).json(req.body)
+  return res.json(req.body)
 })
 
 export default router
