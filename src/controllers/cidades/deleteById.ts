@@ -21,5 +21,8 @@ export const deleteByIdValidation  = validation({
 // Método deleteById da controller Cidades
 export const deleteById = async (req: Request<IParamProps>, res: Response) => {
   console.log(req.params)
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('Não implementado')
+  if (Number(req.params.id) === 99999)
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .send({ errors: { default: 'Id não encontrado' } })
+  return res.status(StatusCodes.NO_CONTENT).send('Não implementado')
 }

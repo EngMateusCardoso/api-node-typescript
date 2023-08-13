@@ -15,6 +15,8 @@ router.get('/cidades/:id', cidadesController.getByIdValidation, cidadesControlle
 router.put('/cidades/:id', cidadesController.updateByIdValidation, cidadesController.updateById)
 router.delete('/cidades/:id', cidadesController.deleteByIdValidation, cidadesController.deleteById)
 
+
+
 // res.send() envia uma string
 // res.json() envia um objeto json
 router.get('/api', (_, res) => {
