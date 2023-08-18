@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 import { validation } from '../../shared/middleware/Validations'
 import { ICidade } from '../../database/models';
+import { cidadesProvider } from '../../database/providers/cidades';
 
 // Tipagem do params
 // qual a cidade
@@ -27,9 +28,15 @@ export const updateByIdValidation  = validation({
 
 // Método updateById da controller Cidades
 export const updateById = async (req: Request<IParamProps, {}, IBodyProps>, res: Response) => {
-  if(Number(req.params.id) === 99999){
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-  .send({ errors: { default: 'Registro não encontrado' } })
+  if (req.params.id === undefined)
+    return res.status(StatusCodes.BAD_REQUEST).json({ errors: { default: 'Id não encontrado' } })
+
+  const result = await cidadesProvider.updateById(req.params.id, req.body)
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: result.message} })
   }
-  return res.status(StatusCodes.NO_CONTENT).send()
+
+  // Envia a cidade retornada se deu tudo certo
+  return res.status(StatusCodes.NO_CONTENT).send(result)
 }

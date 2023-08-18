@@ -22,8 +22,10 @@ export const createValidation  = validation({
 // Método create da controller Cidades
 export const create = async (req: Request<{}, {}, IBodyProps>, res: Response) => {
   const result = await cidadesProvider.create(req.body)
+
   if (result instanceof Error) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: result.message} })
   }
+
   return res.status(StatusCodes.CREATED).json({"id": result})
 }

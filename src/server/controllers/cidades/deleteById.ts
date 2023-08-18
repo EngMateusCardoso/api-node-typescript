@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 import { validation } from '../../shared/middleware/Validations'
+import { cidadesProvider } from '../../database/providers/cidades';
 
 // Id apagada
 interface IParamProps {
@@ -20,9 +21,15 @@ export const deleteByIdValidation  = validation({
 
 // Método deleteById da controller Cidades
 export const deleteById = async (req: Request<IParamProps>, res: Response) => {
-  console.log(req.params)
-  if (Number(req.params.id) === 99999)
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .send({ errors: { default: 'Id não encontrado' } })
-  return res.status(StatusCodes.NO_CONTENT).send('Não implementado')
+  if (req.params.id === undefined)
+    return res.status(StatusCodes.BAD_REQUEST).json({ errors: { default: 'Id não encontrado' } })
+
+  const result = await cidadesProvider.deleteById(req.params.id)
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: result.message} })
+  }
+
+  // Envia vazio se deu tudo certo
+  return res.status(StatusCodes.NO_CONTENT).send()
 }

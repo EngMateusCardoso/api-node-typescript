@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 import { validation } from '../../shared/middleware/Validations'
+import { cidadesProvider } from '../../database/providers/cidades';
 
 // Tipagem do params
 interface IParamProps {
@@ -20,8 +21,15 @@ export const getByIdValidation  = validation({
 
 // Método getById da controller Cidades
 export const getById = async (req: Request<IParamProps>, res: Response) => {
-  if(Number(req.params.id) === 99999) 
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-  .send({ errors: { default: 'Registro não encontrado' } })
-  return res.status(StatusCodes.OK).json({id: req.params.id, nome: 'São Paulo'})
+  if (req.params.id === undefined)
+    return res.status(StatusCodes.BAD_REQUEST).json({ errors: { default: 'Id não encontrado' } })
+
+  const result = await cidadesProvider.getById(req.params.id)
+
+  if (result instanceof Error) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: result.message} })
+  }
+
+  // Envia a cidade retornada se deu tudo certo
+  return res.status(StatusCodes.OK).json(result)
 }
