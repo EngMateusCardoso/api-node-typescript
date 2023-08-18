@@ -1,6 +1,6 @@
 import express from 'express'
 import router from './routes'
-import '../shared/services/translationsYup'
+import './shared/services/translationsYup'
 
 // forma de dizer ao nosso servidor que ele vai receber requisições de qualquer lugar
 const server = express()

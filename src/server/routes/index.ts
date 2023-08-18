@@ -1,5 +1,5 @@
 import { Router} from 'express'
-import { cidadesController } from '../../controllers'
+import { cidadesController } from './../controllers'
 
 // O router é um middleware que permite eu criar rotas para o meu servidor
 // Depois de criar as rotas, eu preciso dizer ao meu servidor que ele vai usar essas rotas

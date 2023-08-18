@@ -20,7 +20,8 @@ export const development: Knex.Config = {
   // Para sqlite funcionar com foreign key
   pool: {
     afterCreate: (connection: any, done: Function) => {
-      connection.run('PRAMA foreign_keys = ON', done)
+      connection.run('PRAGMA foreign_keys = ON');
+      done();
     }
   }
 }
