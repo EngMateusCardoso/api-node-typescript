@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
 import { validation } from '../../shared/middleware/Validations'
+import { ICidade } from '../../database/models';
 
 // Tipagem do params
 // qual a cidade
@@ -9,9 +10,7 @@ interface IParamProps {
   id?: number;
 }
 // novo nome
-interface IBodyProps {
-  nome?: string;
-}
+interface IBodyProps extends Omit<ICidade, 'id'> {}
 
 // Método de validação da controller Cidades
 // Os parâmetros são os schemas de validação com a sintaxe do yup
