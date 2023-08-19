@@ -1,4 +1,3 @@
-import knex from 'knex'
 import { Knex } from './server/database/knex'
 import server from './server/server'
 
@@ -13,7 +12,7 @@ if(process.env.IS_LOCALHOST !== 'true') {
   console.log('Running migrations...')
   // Executa as migrations e depois inicia o servidor
   Knex.migrate.latest().then(() => {
-    // seed
+    // popular as seed
     Knex.seed.run().then(() => {
       startServer()
     }).catch(console.log)

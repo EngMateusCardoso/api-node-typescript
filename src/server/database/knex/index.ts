@@ -15,4 +15,5 @@ const getEnviroment = () => {
   }
 }
 
+// Exporta o knex com as configurações de acordo com o ambiente
 export const Knex = knex(getEnviroment());
