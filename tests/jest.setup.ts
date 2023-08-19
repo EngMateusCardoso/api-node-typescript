@@ -6,6 +6,7 @@ import { Knex } from "../src/server/database/knex";
 // Executa as migrations antes de todos os testes
 beforeAll(async () => {
   await Knex.migrate.latest();
+  await Knex.seed.run();
 });
 
 // Run seeds before each test

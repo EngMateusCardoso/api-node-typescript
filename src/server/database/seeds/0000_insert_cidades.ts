@@ -1,0 +1,91 @@
+import { Knex } from "knex";
+import { ETableNames } from "../ETableNames";
+
+export const seed = async (knex: Knex) => {
+  // Deve verificar se a tabela está vazia
+  // Ou se o seed já foi executado populando a tabela
+  const [{ count }] = await knex(ETableNames.CIDADE).count<[{ count: number}]>('* as count')
+  // Se a tabela não estiver vazia, não executa o seed
+  if (!Number.isInteger(count) || Number(count) > 0) return
+  // Tem que transformar o array de nomes de cidades em um array de objetos
+  const cidadesToInsert = cidadesSergipe.map(nomeDacidade => ({ nome: nomeDacidade }))
+  await knex(ETableNames.CIDADE).insert(cidadesToInsert);
+}
+
+const cidadesSergipe = [
+  "Amparo de São Francisco",
+  "Aquidabã",
+  "Aracaju",
+  "Arauá",
+  "Areia Branca",
+  "Barra dos Coqueiros",
+  "Boquim",
+  "Brejo Grande",
+  "Campo do Brito",
+  "Canhoba",
+  "Canindé de São Francisco",
+  "Capela",
+  "Carira",
+  "Carmópolis",
+  "Cedro de São João",
+  "Cristinápolis",
+  "Cumbe",
+  "Divina Pastora",
+  "Estância",
+  "Feira Nova",
+  "Frei Paulo",
+  "Gararu",
+  "General Maynard",
+  "Gracho Cardoso",
+  "Ilha das Flores",
+  "Indiaroba",
+  "Itabaiana",
+  "Itabaianinha",
+  "Itabi",
+  "Itaporanga d'Ajuda",
+  "Japaratuba",
+  "Japoatã",
+  "Lagarto",
+  "Laranjeiras",
+  "Macambira",
+  "Malhada dos Bois",
+  "Malhador",
+  "Maruim",
+  "Moita Bonita",
+  "Monte Alegre de Sergipe",
+  "Muribeca",
+  "Neópolis",
+  "Nossa Senhora Aparecida",
+  "Nossa Senhora da Glória",
+  "Nossa Senhora das Dores",
+  "Nossa Senhora de Lourdes",
+  "Nossa Senhora do Socorro",
+  "Pacatuba",
+  "Pedra Mole",
+  "Pedrinhas",
+  "Pinhão",
+  "Pirambu",
+  "Poço Redondo",
+  "Poço Verde",
+  "Porto da Folha",
+  "Propriá",
+  "Riachão do Dantas",
+  "Riachuelo",
+  "Ribeirópolis",
+  "Rosário do Catete",
+  "Salgado",
+  "Santa Luzia do Itanhy",
+  "Santa Rosa de Lima",
+  "Santana do São Francisco",
+  "Santo Amaro das Brotas",
+  "São Cristóvão",
+  "São Domingos",
+  "São Francisco",
+  "São Miguel do Aleixo",
+  "Simão Dias",
+  "Siriri",
+  "Telha",
+  "Tobias Barreto",
+  "Tomar do Geru",
+  "Umbaúba"
+]

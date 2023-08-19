@@ -1,3 +1,4 @@
+import knex from 'knex'
 import { Knex } from './server/database/knex'
 import server from './server/server'
 
@@ -9,9 +10,13 @@ const startServer = () => {
 }
 
 if(process.env.IS_LOCALHOST !== 'true') {
+  console.log('Running migrations...')
   // Executa as migrations e depois inicia o servidor
   Knex.migrate.latest().then(() => {
-    startServer()
+    // seed
+    Knex.seed.run().then(() => {
+      startServer()
+    }).catch(console.log)
   }).catch(console.log)
 } else {
   // No localhost não é necessário executar as migrations toda vez que o servidor inicia
