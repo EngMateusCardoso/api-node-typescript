@@ -1,5 +1,5 @@
 import { Router} from 'express'
-import { cidadesController, pessoasController } from './../controllers'
+import { cidadesController, pessoasController, usuariosController } from './../controllers'
 
 // O router é um middleware que permite eu criar rotas para o meu servidor
 // Depois de criar as rotas, eu preciso dizer ao meu servidor que ele vai usar essas rotas
@@ -20,6 +20,9 @@ router.get('/pessoas', pessoasController.getAllValidation, pessoasController.get
 router.get('/pessoas/:id', pessoasController.getByIdValidation, pessoasController.getById)
 router.put('/pessoas/:id', pessoasController.updateByIdValidation, pessoasController.updateById)
 router.delete('/pessoas/:id', pessoasController.deleteByIdValidation, pessoasController.deleteById)
+
+router.post('/entrar', usuariosController.signInValidation, usuariosController.signIn)
+router.post('/cadastrar', usuariosController.signUpValidation, usuariosController.signUp)
 
 // res.send() envia uma string
 // res.json() envia um objeto json
