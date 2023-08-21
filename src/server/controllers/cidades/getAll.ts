@@ -28,7 +28,7 @@ export const getAllValidation  = validation({
 
 // Método getAll da controller Cidades
 export const getAll = async (req: Request<{}, {}, {}, IQuerryProps>, res: Response) => {
-  const result = await cidadesProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filter || '', Number(req.query.id))
+  const result = await cidadesProvider.getAll(req.query.page || 1, req.query.limit || 10, req.query.filter || '', Number(req.query.id || 0))
   const count = await cidadesProvider.count(req.query.filter)
 
   if (result instanceof Error) {
