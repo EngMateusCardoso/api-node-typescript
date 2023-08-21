@@ -5,6 +5,7 @@ import { Knex } from "../src/server/database/knex";
 // Run migrations before all tests
 // Executa as migrations antes de todos os testes
 beforeAll(async () => {
+  require('dotenv').config()
   await Knex.migrate.latest();
   await Knex.seed.run();
 });

@@ -30,7 +30,6 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
   } else {
     const accessToken = JWTService.sign({ uid: result.id })
     if (accessToken === 'JWT_SECRET_NOT_FOUND') {
-      console.error(accessToken)
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: 'Erro ao gerar token'} })
     }
     return res.status(StatusCodes.OK).json({ accessToken: accessToken})
