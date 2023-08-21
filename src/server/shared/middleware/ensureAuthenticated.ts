@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
+import { JWTService } from "../services";
 
 export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
   const { authorization } = req.headers
@@ -18,11 +19,19 @@ export const ensureAuthenticated: RequestHandler = async (req, res, next) => {
     })
   }
 
-  if (token !== '123456') {
+  const jwtData = JWTService.verify(token)
+  if (jwtData === 'JWT_SECRET_NOT_FOUND') {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      errors: { default: 'Erro ao verificar o token' }
+    })
+  } else if (jwtData === 'INVALID_TOKEN') {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       errors: { default: 'Não autenticado' }
     })
   }
+
+  // Colocando o id do usuário no header da requisição
+  req.headers.idUsuario = jwtData.uid.toString()
 
   return next()
 }

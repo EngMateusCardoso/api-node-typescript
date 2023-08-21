@@ -1,6 +1,9 @@
 import { Knex } from './server/database/knex'
 import server from './server/server'
 
+// Carrega as variáveis de ambiente
+require('dotenv').config()
+
 const startServer = () => {
   // Ouvindo o servidor na porta de .env se for nula ouve a porta 3300
   server.listen(process.env.PORT || 3300, () => {

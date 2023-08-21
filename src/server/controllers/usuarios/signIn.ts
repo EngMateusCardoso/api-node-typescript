@@ -4,7 +4,7 @@ import * as yup from 'yup'
 import { validation } from '../../shared/middleware/Validations'
 import { IUsuario } from '../../database/models'
 import { usuariosProviders } from '../../database/providers/usuarios'
-import { passwordCrypto } from '../../shared/services'
+import { JWTService, passwordCrypto } from '../../shared/services'
 
 interface IBodyProps extends Omit<IUsuario, 'id' | 'nome'> {}
 
@@ -28,6 +28,11 @@ export const signIn = async (req: Request<{}, {}, IBodyProps>, res: Response) =>
   if (!passwordIsValid) {
     return res.status(StatusCodes.UNAUTHORIZED).json({ errors: {default: 'Email ou senha inválidos'} })
   } else {
-    return res.status(StatusCodes.OK).json({ accessToken: '123456789'})
+    const accessToken = JWTService.sign({ uid: result.id })
+    if (accessToken === 'JWT_SECRET_NOT_FOUND') {
+      console.error(accessToken)
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: {default: 'Erro ao gerar token'} })
+    }
+    return res.status(StatusCodes.OK).json({ accessToken: accessToken})
   }
 }
